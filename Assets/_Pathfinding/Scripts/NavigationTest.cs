@@ -52,7 +52,7 @@ namespace _Pathfinding.Pathfinding
             {
                 Node destinationNode = NodeGrid.singleton.GetClosestNodeToWorldPosition(hit.point);
 
-                if (destinationNode != null && destinationNode.IsWalkable)
+                if (destinationNode != null)
                 {
                     // Set the destination on the Navigator
                     _navigator.NavigateTo(destinationNode);

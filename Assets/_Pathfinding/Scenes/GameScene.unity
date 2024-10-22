@@ -285,7 +285,7 @@ PrefabInstance:
     - target: {fileID: 3359367378166861767, guid: af2a66d80f34fd046b6b5d1c04a0f498,
         type: 3}
       propertyPath: m_LocalScale.z
-      value: 2
+      value: 2.25
       objectReference: {fileID: 0}
     - target: {fileID: 3359367378166861767, guid: af2a66d80f34fd046b6b5d1c04a0f498,
         type: 3}
@@ -379,7 +379,7 @@ PrefabInstance:
     - target: {fileID: 3359367378166861767, guid: af2a66d80f34fd046b6b5d1c04a0f498,
         type: 3}
       propertyPath: m_LocalScale.z
-      value: 2
+      value: 2.25
       objectReference: {fileID: 0}
     - target: {fileID: 3359367378166861767, guid: af2a66d80f34fd046b6b5d1c04a0f498,
         type: 3}
@@ -771,7 +771,7 @@ PrefabInstance:
     - target: {fileID: 3359367378166861767, guid: af2a66d80f34fd046b6b5d1c04a0f498,
         type: 3}
       propertyPath: m_LocalScale.z
-      value: 2
+      value: 2.25
       objectReference: {fileID: 0}
     - target: {fileID: 3359367378166861767, guid: af2a66d80f34fd046b6b5d1c04a0f498,
         type: 3}
@@ -1120,6 +1120,36 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Navigator
+      objectReference: {fileID: 0}
+    - target: {fileID: 6106160296795362296, guid: f81c56ac31f75eb4a996709dc7625607,
+        type: 3}
+      propertyPath: _moveAcceleration
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6106160296795362296, guid: f81c56ac31f75eb4a996709dc7625607,
+        type: 3}
+      propertyPath: _moveDeceleration
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6106160296795362296, guid: f81c56ac31f75eb4a996709dc7625607,
+        type: 3}
+      propertyPath: _rotateWhileMoving
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6106160296795362296, guid: f81c56ac31f75eb4a996709dc7625607,
+        type: 3}
+      propertyPath: _rotationAcceleration
+      value: 180
+      objectReference: {fileID: 0}
+    - target: {fileID: 6106160296795362296, guid: f81c56ac31f75eb4a996709dc7625607,
+        type: 3}
+      propertyPath: _rotationDeceleration
+      value: 180
+      objectReference: {fileID: 0}
+    - target: {fileID: 6106160296795362296, guid: f81c56ac31f75eb4a996709dc7625607,
+        type: 3}
+      propertyPath: _moveOnlyAfterRotation
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6636216022966913537, guid: f81c56ac31f75eb4a996709dc7625607,
         type: 3}
