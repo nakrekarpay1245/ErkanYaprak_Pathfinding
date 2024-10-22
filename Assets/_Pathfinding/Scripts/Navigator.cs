@@ -21,7 +21,7 @@ namespace _Pathfinding.Pathfinding
 
         private void Start()
         {
-            _currentNode = NodeGrid.singleton.GetNodeFromWorldPosition(transform.position);
+            _currentNode = NodeGrid.singleton.GetClosestNodeToWorldPosition(transform.position);
         }
 
         /// <summary>

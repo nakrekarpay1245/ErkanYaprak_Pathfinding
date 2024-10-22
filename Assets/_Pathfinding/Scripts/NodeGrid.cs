@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using _Pathfinding._helpers;
+using System.Linq;
 
 namespace _Pathfinding.Pathfinding
 {
@@ -63,19 +64,16 @@ namespace _Pathfinding.Pathfinding
         }
 
         /// <summary>
-        /// Returns the node at the specified world position by converting the position to grid coordinates.
+        /// Returns the closest node to the specified world position.
         /// </summary>
         /// <param name="worldPosition">The world position to convert.</param>
-        /// <returns>The corresponding node in the grid.</returns>
-        public Node GetNodeFromWorldPosition(Vector3 worldPosition)
+        /// <returns>The closest node in the grid.</returns>
+        public Node GetClosestNodeToWorldPosition(Vector3 worldPosition)
         {
-            float percentX = Mathf.Clamp01((worldPosition.x + _gridWidth / 2) / _gridWidth);
-            float percentY = Mathf.Clamp01((worldPosition.z + _gridHeight / 2) / _gridHeight);
-
-            int x = Mathf.RoundToInt((_gridWidth - 1) * percentX);
-            int y = Mathf.RoundToInt((_gridHeight - 1) * percentY);
-
-            return _nodeGrid[x, y];
+            // Use LINQ to find the closest node
+            return _nodeGrid.Cast<Node>()
+                .OrderBy(node => Vector3.Distance(node.Position, worldPosition))
+                .FirstOrDefault();
         }
 
         /// <summary>

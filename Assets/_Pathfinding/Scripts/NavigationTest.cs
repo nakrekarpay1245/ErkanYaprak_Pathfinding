@@ -50,7 +50,7 @@ namespace _Pathfinding.Pathfinding
             // Perform raycast to check for ground click
             if (Physics.Raycast(ray, out hit, Mathf.Infinity, _groundLayer))
             {
-                Node destinationNode = NodeGrid.singleton.GetNodeFromWorldPosition(hit.point);
+                Node destinationNode = NodeGrid.singleton.GetClosestNodeToWorldPosition(hit.point);
 
                 if (destinationNode != null && destinationNode.IsWalkable)
                 {

@@ -1,5 +1,6 @@
 using _Pathfinding._helpers;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace _Pathfinding.Pathfinding
@@ -73,8 +74,11 @@ namespace _Pathfinding.Pathfinding
                 }
             }
 
-            // Return an empty path if no path is found
-            return new List<Node>();
+            Debug.LogWarning("Path can not find but this is the closest path!");
+            Node bestNode = GetLowestFCostClosestNode(closedSet, fCost, targetNode);
+            return FindPath(startNode, bestNode);
+            //// Return an empty path if no path is found
+            //return new List<Node>();
         }
 
         /// <summary>
@@ -123,6 +127,27 @@ namespace _Pathfinding.Pathfinding
         private float GetHeuristic(Node nodeA, Node nodeB)
         {
             return Mathf.Abs(nodeA.X - nodeB.X) + Mathf.Abs(nodeA.Y - nodeB.Y);
+        }
+
+        /// <summary>
+        /// Finds the closest 10 nodes to the target node and returns the one with the lowest F cost.
+        /// </summary>
+        /// <param name="closedSet">The set of evaluated nodes.</param>
+        /// <param name="fCost">The dictionary of F costs.</param>
+        /// <param name="targetNode">The target node.</param>
+        /// <returns>The node with the lowest F cost among the closest 10 nodes.</returns>
+        private Node GetLowestFCostClosestNode(HashSet<Node> closedSet, Dictionary<Node, float> fCost, Node targetNode)
+        {
+            // Get the closest 10 nodes based on distance to the target node
+            var closestNodes = closedSet
+                .OrderBy(node => Vector3.Distance(node.Position, targetNode.Position))
+                .Take(10) // Take the closest 10 nodes
+                .ToList();
+
+            // Return the one with the lowest F cost
+            return closestNodes
+                .OrderBy(node => fCost[node])
+                .FirstOrDefault();
         }
 
         /// <summary>
