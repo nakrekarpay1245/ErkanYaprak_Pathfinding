@@ -13,7 +13,7 @@ namespace _Pathfinding.Pathfinding
         [Tooltip("The speed at which the entity moves along the path.")]
         [SerializeField] private float _moveSpeed = 5f;
 
-        [SerializeField]
+        [SerializeField, Tooltip("The current node the pathfinder is on.")]
         private Node _currentNode;
 
         private List<Node> _path = new List<Node>();
@@ -74,7 +74,7 @@ namespace _Pathfinding.Pathfinding
         /// <summary>
         /// Stops the entity's movement, if it is currently navigating.
         /// </summary>
-        public void StopNavigation()
+        private void StopNavigation()
         {
             StopAllCoroutines();
             _isMoving = false;

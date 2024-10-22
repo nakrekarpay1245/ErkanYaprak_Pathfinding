@@ -21,15 +21,6 @@ namespace _Pathfinding.Pathfinding
         [Tooltip("Indicates whether the node is walkable or blocked.")]
         [SerializeField] private bool _isWalkable;
 
-        [HideInInspector]
-        public Node ParentNode; // The node that led to this node (used for path reconstruction)
-
-        [HideInInspector]
-        public float GCost; // The cost from the start node to this node
-
-        [HideInInspector]
-        public float HCost; // The heuristic cost estimate from this node to the target
-
         [Header("World Position")]
         [Tooltip("The world position of the node.")]
         [SerializeField] private Vector3 _worldPosition;
@@ -69,8 +60,6 @@ namespace _Pathfinding.Pathfinding
             _y = y;
             _isWalkable = isWalkable;
             _worldPosition = worldPosition;
-            GCost = 0f;
-            HCost = 0f;
         }
     }
 }

@@ -1,6 +1,7 @@
 using _Pathfinding._helpers;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 namespace _Pathfinding.Pathfinding
@@ -10,6 +11,24 @@ namespace _Pathfinding.Pathfinding
     /// </summary>
     public class Pathfinding : MonoSingleton<Pathfinding>
     {
+        [Header("Gizmos Settings")]
+        [Tooltip("Radius of the nodes in the Gizmos.")]
+        [SerializeField]
+        private float _closedNodeGizmosRadius = 0.35f;
+
+        [Tooltip("Radius of the nodes in the Gizmos.")]
+        [SerializeField]
+        private float _openNodeGizmosRadius = 0.15f;
+
+        [Tooltip("Color of the closed nodes in the Gizmos.")]
+        [SerializeField] private Color closedNodeColor = Color.gray;
+
+        [Tooltip("Color of the open nodes in the Gizmos.")]
+        [SerializeField] private Color openNodeColor = Color.yellow;
+
+        [HideInInspector] public List<Node> OpenSet = new List<Node>(); // Nodes to be evaluated
+        [HideInInspector] public HashSet<Node> ClosedSet = new HashSet<Node>(); // Nodes already evaluated
+
         /// <summary>
         /// Finds the shortest path between the start and target nodes using the A* algorithm.
         /// </summary>
@@ -18,53 +37,48 @@ namespace _Pathfinding.Pathfinding
         /// <returns>A list of nodes representing the path to the target.</returns>
         public List<Node> FindPath(Node startNode, Node targetNode)
         {
-            // The set of nodes to be evaluated
-            List<Node> openSet = new List<Node>();
-            // The set of nodes already evaluated
-            HashSet<Node> closedSet = new HashSet<Node>();
+            Dictionary<Node, float> gCost = new Dictionary<Node, float>(); // Cost from start to each node
+            Dictionary<Node, float> fCost = new Dictionary<Node, float>(); // Total cost from start to target through each node
+            Dictionary<Node, Node> cameFrom = new Dictionary<Node, Node>(); // Track the most efficient previous step
+            List<Node> currentPath = new List<Node>();
 
-            // Dictionary to store the cost from start to each node
-            Dictionary<Node, float> gCost = new Dictionary<Node, float>();
-            // Dictionary to store the cost from start to the target through each node
-            Dictionary<Node, float> fCost = new Dictionary<Node, float>();
-            // Dictionary to track the most efficient previous step
-            Dictionary<Node, Node> cameFrom = new Dictionary<Node, Node>();
+            OpenSet.Clear();
+            ClosedSet.Clear();
 
-            openSet.Add(startNode);
+            OpenSet.Add(startNode);
             gCost[startNode] = 0;
             fCost[startNode] = GetHeuristic(startNode, targetNode);
 
-            while (openSet.Count > 0)
+            while (OpenSet.Count > 0)
             {
-                // Get the node in the open set with the lowest F cost
-                Node currentNode = GetNodeWithLowestFCost(openSet, fCost);
+                Node currentNode = GetNodeWithLowestFCost(OpenSet, fCost); // Get the node with the lowest F cost
 
-                // If we reached the target, reconstruct and return the path
-                if (currentNode == targetNode)
+                if (currentNode == targetNode) // If target is reached, reconstruct the path
                 {
-                    return ReconstructPath(cameFrom, currentNode);
+                    currentPath = ReconstructPath(cameFrom, currentNode);
+                    return currentPath;
                 }
 
-                openSet.Remove(currentNode);
-                closedSet.Add(currentNode);
+                OpenSet.Remove(currentNode);
+                ClosedSet.Add(currentNode);
 
                 // Evaluate neighbors
                 foreach (Node neighbor in NodeGrid.singleton.GetNeighbors(currentNode))
                 {
-                    if (closedSet.Contains(neighbor) || !neighbor.IsWalkable)
+                    if (ClosedSet.Contains(neighbor) || !neighbor.IsWalkable) // Skip if already evaluated or not walkable
                     {
-                        continue; // Ignore the neighbor which is already evaluated or not walkable
+                        continue;
                     }
 
                     float tentativeGCost = gCost[currentNode] + GetDistance(currentNode, neighbor);
 
-                    if (!openSet.Contains(neighbor))
+                    if (!OpenSet.Contains(neighbor)) // If neighbor is not in open set, add it
                     {
-                        openSet.Add(neighbor);
+                        OpenSet.Add(neighbor);
                     }
-                    else if (tentativeGCost >= gCost[neighbor])
+                    else if (tentativeGCost >= gCost[neighbor]) // Not a better path
                     {
-                        continue; // This is not a better path
+                        continue;
                     }
 
                     // This path is the best so far
@@ -74,11 +88,10 @@ namespace _Pathfinding.Pathfinding
                 }
             }
 
-            Debug.LogWarning("Path can not find but this is the closest path!");
-            Node bestNode = GetLowestFCostClosestNode(closedSet, fCost, targetNode);
-            return FindPath(startNode, bestNode);
-            //// Return an empty path if no path is found
-            //return new List<Node>();
+            Debug.LogWarning("Path cannot be found, but the closest path is being returned!");
+            Node bestNode = GetLowestFCostClosestNode(ClosedSet, fCost, targetNode);
+            currentPath = FindPath(startNode, bestNode);
+            return currentPath; // Find path to the best node
         }
 
         /// <summary>
@@ -93,9 +106,9 @@ namespace _Pathfinding.Pathfinding
             while (cameFrom.ContainsKey(currentNode))
             {
                 path.Add(currentNode);
-                currentNode = cameFrom[currentNode];
+                currentNode = cameFrom[currentNode]; // Move to the previous node
             }
-            path.Reverse(); // Optional: reverse the path to start from the start node
+            path.Reverse(); // Reverse the path to start from the beginning
             return path;
         }
 
@@ -112,7 +125,7 @@ namespace _Pathfinding.Pathfinding
             {
                 if (fCost[node] < fCost[lowestFCostNode])
                 {
-                    lowestFCostNode = node;
+                    lowestFCostNode = node; // Update if this node has a lower F cost
                 }
             }
             return lowestFCostNode;
@@ -126,7 +139,7 @@ namespace _Pathfinding.Pathfinding
         /// <returns>The heuristic cost.</returns>
         private float GetHeuristic(Node nodeA, Node nodeB)
         {
-            return Mathf.Abs(nodeA.X - nodeB.X) + Mathf.Abs(nodeA.Y - nodeB.Y);
+            return Mathf.Abs(nodeA.X - nodeB.X) + Mathf.Abs(nodeA.Y - nodeB.Y); // Manhattan distance
         }
 
         /// <summary>
@@ -158,7 +171,27 @@ namespace _Pathfinding.Pathfinding
         /// <returns>The distance between the two nodes.</returns>
         private float GetDistance(Node nodeA, Node nodeB)
         {
-            return Vector3.Distance(nodeA.Position, nodeB.Position);
+            return Vector3.Distance(nodeA.Position, nodeB.Position); // Euclidean distance
+        }
+
+        /// <summary>
+        /// Draws Gizmos to visualize nodes in the pathfinding grid.
+        /// </summary>
+        private void OnDrawGizmos()
+        {
+            // Draw open nodes
+            Gizmos.color = openNodeColor; // Set color for the open nodes
+            foreach (Node node in OpenSet) // Assuming NodeGrid has an OpenSet property
+            {
+                Gizmos.DrawWireSphere(node.Position, _openNodeGizmosRadius); // Draw open node with a smaller sphere
+            }
+
+            // Draw closed nodes
+            Gizmos.color = closedNodeColor; // Set color for the closed nodes
+            foreach (Node node in ClosedSet)
+            {
+                Gizmos.DrawWireSphere(node.Position, _closedNodeGizmosRadius); // Draw closed node with a smaller sphere
+            }
         }
     }
 }
