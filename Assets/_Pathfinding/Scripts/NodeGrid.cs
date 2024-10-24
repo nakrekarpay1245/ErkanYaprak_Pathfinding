@@ -3,7 +3,7 @@ using UnityEngine;
 using _Pathfinding._helpers;
 using System.Linq;
 
-namespace _Pathfinding.Pathfinding
+namespace _Pathfinding
 {
     /// <summary>
     /// Manages the creation and configuration of a 2D grid of nodes for pathfinding.

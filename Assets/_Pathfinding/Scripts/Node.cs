@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-namespace _Pathfinding.Pathfinding
+namespace _Pathfinding
 {
     /// <summary>
     /// Represents a node in the pathfinding grid. Each node contains information 

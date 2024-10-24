@@ -1,10 +1,9 @@
 using _Pathfinding._helpers;
 using System.Collections.Generic;
 using System.Linq;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
-namespace _Pathfinding.Pathfinding
+namespace _Pathfinding
 {
     /// <summary>
     /// Provides A* pathfinding functionality for navigating through nodes.

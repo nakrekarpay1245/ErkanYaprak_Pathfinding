@@ -1,6 +1,7 @@
+using _Pathfinding._Abstracts;
 using UnityEngine;
 
-namespace _Pathfinding.Pathfinding
+namespace _Pathfinding
 {
     /// <summary>
     /// This script is used to test the Navigator class by setting a target destination 
@@ -10,7 +11,7 @@ namespace _Pathfinding.Pathfinding
     {
         [Header("Navigator Reference")]
         [Tooltip("The reference to the Navigator component responsible for moving the entity.")]
-        [SerializeField] private Navigator _navigator;
+        [SerializeField] private AbstractNavigatorBase _navigator;
 
         [Header("Layer Mask Settings")]
         [Tooltip("The layer that is considered valid for selecting a destination.")]
