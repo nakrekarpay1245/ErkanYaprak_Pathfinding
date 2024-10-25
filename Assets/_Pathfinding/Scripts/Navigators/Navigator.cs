@@ -2,28 +2,35 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using _Pathfinding._Abstracts;
+using _Pathfinding.Grid;
+using _Pathfinding.PathfindingSystem;
 
 namespace _Pathfinding.Navigators
 {
     /// <summary>
     /// Handles the movement and navigation logic specific to a UFO entity.
     /// Inherits from AbstractNavigatorBase and implements custom UFO movement logic.
-    /// Accelerates at the start, maintains a constant speed, and decelerates at the final node.
+    /// Accelerates at the start, maintains a constant speed, and decelerates at the final node,
+    /// while smoothly rotating towards each node on the Y-axis.
     /// </summary>
     public class Navigator : AbstractNavigatorBase
     {
-        [Header("UFO Movement Settings")]
+        [Header("Movement Settings")]
         [Tooltip("Acceleration applied when the UFO starts moving.")]
-        [SerializeField, Range(0.001f, 10f)] private float _moveAcceleration = 2f;
+        [SerializeField, Range(0.1f, 10f)] private float _moveAcceleration = 2f;
 
         [Tooltip("Deceleration applied when the UFO is stopping.")]
-        [SerializeField, Range(0.001f, 10f)] private float _moveDeceleration = 2f;
+        [SerializeField, Range(0.1f, 10f)] private float _moveDeceleration = 2f;
 
         [Tooltip("The threshold distance to the final target node at which the UFO will start slowing down.")]
         [SerializeField, Range(0.001f, 1f)] private float _distanceThreshold = 1f;
 
         [Tooltip("The distance at which the UFO considers it has reached the final target.")]
         [SerializeField, Range(0.001f, 1f)] private float _stoppingDistance = 0.5f;
+
+        [Header("Rotation Settings")]
+        [Tooltip("Speed at which the UFO rotates towards each node.")]
+        [SerializeField, Range(0.1f, 25f)] private float _rotationSpeed = 2f;
 
         private float _currentSpeed = 0f; // Track the current movement speed
         private bool _isFinalNode = false; // Track if we are on the final node
@@ -60,6 +67,7 @@ namespace _Pathfinding.Navigators
         /// <summary>
         /// Follows the calculated path to the target node, applying acceleration at the start,
         /// maintaining a constant speed, and decelerating only when approaching the final node.
+        /// Smoothly rotates towards each node on the Y-axis as it navigates.
         /// </summary>
         /// <param name="path">The list of nodes representing the path.</param>
         protected override IEnumerator FollowPath(List<Node> path)
@@ -95,6 +103,10 @@ namespace _Pathfinding.Navigators
 
                     // Move towards the target node
                     transform.position = Vector3.MoveTowards(transform.position, node.Position, _currentSpeed * Time.deltaTime);
+
+                    // Smoothly rotate towards the node on the Y-axis
+                    RotateTowardsNode(node.Position);
+
                     yield return null; // Wait for the next frame
                 }
 
@@ -103,6 +115,17 @@ namespace _Pathfinding.Navigators
             }
 
             _isMoving = false;
+        }
+
+        /// <summary>
+        /// Smoothly rotates the UFO towards a specified target position on the Y-axis.
+        /// </summary>
+        /// <param name="targetPosition">The position to rotate towards.</param>
+        private void RotateTowardsNode(Vector3 targetPosition)
+        {
+            Vector3 direction = (targetPosition - transform.position).normalized;
+            Quaternion targetRotation = Quaternion.LookRotation(new Vector3(direction.x, 0, direction.z));
+            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, _rotationSpeed * Time.deltaTime);
         }
 
         /// <summary>

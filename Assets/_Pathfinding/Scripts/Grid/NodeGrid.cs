@@ -3,7 +3,7 @@ using UnityEngine;
 using _Pathfinding._helpers;
 using System.Linq;
 
-namespace _Pathfinding
+namespace _Pathfinding.Grid
 {
     /// <summary>
     /// Manages the creation and configuration of a 2D grid of nodes for pathfinding.
@@ -13,12 +13,15 @@ namespace _Pathfinding
     {
         [Header("Grid Settings")]
         [Tooltip("Width of the grid.")]
+        [Range(2,100)]
         [SerializeField] private int _gridWidth;
 
         [Tooltip("Height of the grid.")]
+        [Range(2, 100)]
         [SerializeField] private int _gridHeight;
 
         [Tooltip("Size of each node in the world.")]
+        [Range(0.1f, 5f)]
         [SerializeField] private float _nodeSize;
 
         [Tooltip("Layer mask used to determine unwalkable areas.")]

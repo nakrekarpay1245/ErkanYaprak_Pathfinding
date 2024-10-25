@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-namespace _Pathfinding
+namespace _Pathfinding.Grid
 {
     /// <summary>
     /// Represents a node in the pathfinding grid. Each node contains information 
@@ -11,21 +11,32 @@ namespace _Pathfinding
     public class Node
     {
         // Fields
-        [Header("Node Properties")]
-        [Tooltip("The X position of the node in the grid.")]
-        [SerializeField] private int _x;
+        // Node Properties
+        #region Node Properties
+        /// <summary>
+        /// The X position of the node in the grid
+        /// </summary>
+        private int _x;
 
-        [Tooltip("The Y position of the node in the grid.")]
-        [SerializeField] private int _y;
+        /// <summary>
+        /// The Y position of the node in the grid
+        /// </summary>
+        private int _y;
 
-        [Tooltip("Indicates whether the node is walkable or blocked.")]
-        [SerializeField] private bool _isWalkable;
+        /// <summary>
+        /// Indicates whether the node is walkable or blocked
+        /// </summary>
+        private bool _isWalkable;
 
-        [Header("World Position")]
-        [Tooltip("The world position of the node.")]
-        [SerializeField] private Vector3 _worldPosition;
+        // World Position
+        /// <summary>
+        /// The world position of the nod
+        /// </summary>
+        private Vector3 _worldPosition;
+        #endregion
 
         // Properties
+        #region Properties
         /// <summary>
         /// Gets the X coordinate of the node.
         /// </summary>
@@ -45,8 +56,10 @@ namespace _Pathfinding
         /// Indicates whether this node is walkable (accessible).
         /// </summary>
         public bool IsWalkable => _isWalkable;
+        #endregion
 
         // Constructor
+        #region Constructor
         /// <summary>
         /// Initializes a new instance of the Node class with grid coordinates, walkability, and world position.
         /// </summary>
@@ -61,5 +74,6 @@ namespace _Pathfinding
             _isWalkable = isWalkable;
             _worldPosition = worldPosition;
         }
+        #endregion
     }
 }

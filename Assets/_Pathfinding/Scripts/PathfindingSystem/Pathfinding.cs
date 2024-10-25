@@ -1,9 +1,10 @@
 using _Pathfinding._helpers;
+using _Pathfinding.Grid;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-namespace _Pathfinding
+namespace _Pathfinding.PathfindingSystem
 {
     /// <summary>
     /// Provides A* pathfinding functionality for navigating through nodes.
@@ -12,18 +13,20 @@ namespace _Pathfinding
     {
         [Header("Gizmos Settings")]
         [Tooltip("Radius of the nodes in the Gizmos.")]
+        [Range(0f, 1f)]
         [SerializeField]
         private float _closedNodeGizmosRadius = 0.35f;
 
         [Tooltip("Radius of the nodes in the Gizmos.")]
+        [Range(0f, 1f)]
         [SerializeField]
         private float _openNodeGizmosRadius = 0.15f;
 
         [Tooltip("Color of the closed nodes in the Gizmos.")]
-        [SerializeField] private Color closedNodeColor = Color.gray;
+        [SerializeField] private Color _closedNodeColor = Color.yellow;
 
         [Tooltip("Color of the open nodes in the Gizmos.")]
-        [SerializeField] private Color openNodeColor = Color.yellow;
+        [SerializeField] private Color _openNodeColor = Color.red;
 
         [HideInInspector] public List<Node> OpenSet = new List<Node>(); // Nodes to be evaluated
         [HideInInspector] public HashSet<Node> ClosedSet = new HashSet<Node>(); // Nodes already evaluated
@@ -179,14 +182,14 @@ namespace _Pathfinding
         private void OnDrawGizmos()
         {
             // Draw open nodes
-            Gizmos.color = openNodeColor; // Set color for the open nodes
+            Gizmos.color = _openNodeColor; // Set color for the open nodes
             foreach (Node node in OpenSet) // Assuming NodeGrid has an OpenSet property
             {
-                Gizmos.DrawWireSphere(node.Position, _openNodeGizmosRadius); // Draw open node with a smaller sphere
+                Gizmos.DrawSphere(node.Position, _openNodeGizmosRadius); // Draw open node with a smaller sphere
             }
 
             // Draw closed nodes
-            Gizmos.color = closedNodeColor; // Set color for the closed nodes
+            Gizmos.color = _closedNodeColor; // Set color for the closed nodes
             foreach (Node node in ClosedSet)
             {
                 Gizmos.DrawWireSphere(node.Position, _closedNodeGizmosRadius); // Draw closed node with a smaller sphere

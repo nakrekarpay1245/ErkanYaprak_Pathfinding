@@ -1,3 +1,4 @@
+using _Pathfinding.Grid;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -11,9 +12,11 @@ namespace _Pathfinding._Abstracts
     {
         [Header("Movement Settings")]
         [Tooltip("The speed at which the entity moves along the path.")]
-        [SerializeField, Range(1f, 50f)] protected float _moveSpeed = 5f;
+        [SerializeField, Range(1f, 25f)] protected float _moveSpeed = 5f;
 
-        [SerializeField, Tooltip("The current node the pathfinder is on.")]
+        /// <summary>
+        /// The current node the pathfinder is on
+        /// </summary>
         protected Node _currentNode;
 
         protected List<Node> _path = new List<Node>();

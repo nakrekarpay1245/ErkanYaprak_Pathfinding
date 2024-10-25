@@ -1,7 +1,8 @@
 using _Pathfinding._Abstracts;
+using _Pathfinding.Grid;
 using UnityEngine;
 
-namespace _Pathfinding
+namespace _Pathfinding.Test
 {
     /// <summary>
     /// This script is used to test the Navigator class by setting a target destination 
