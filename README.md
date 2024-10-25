@@ -31,8 +31,11 @@ A customizable pathfinding package for Unity, built with C# and designed with an
    git clone https://github.com/nakrekarpay1245/ErkanYaprak_Pathfinding.git
 ## Add to Your Project
 1. Import or drag the package into your Unity project.
-2. Attach the **Navigator** component to any object you want to move.
-3. Adjust **Node Grid** properties like grid size and walkable layers in the Inspector.
+2. Drag the **Navigator** from the Prefabs folder into the scene or attach the **Navigator** component to any object.
+3. Place the **PathfindingSystem** prefab in the scene at the **0.0.0** position.
+4. Adjust the properties in **NodeGrid** for the area where you want pathfinding and configure the layers.
+5. Start using the **Navigator**'s `NavigateTo` method for navigation.
+
 
 ## Testing the Pathfinding
 - Use the **NavigationTest** script to click in-game and watch the **Navigator** object find a path.
@@ -70,5 +73,5 @@ Feel free to reach out with questions or feedback!
 **Developer**: Erkan Yaprak  
 **GitHub**: [nakrekarpay1245](https://github.com/nakrekarpay1245)  
 **Website**: [erkanyaprak.w3spaces.com](https://erkanyaprak.w3spaces.com)  
-**LinkedIn**: [Erkan Yaprak](https://www.linkedin.com/in/erkan-yaprak)  
+**LinkedIn**: [Erkan Yaprak](https://www.linkedin.com/in/erkanyaprak)  
 **Email**: rknyprk79@gmail.com
